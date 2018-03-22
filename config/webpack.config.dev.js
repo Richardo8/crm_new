@@ -225,7 +225,14 @@ module.exports = {
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
+      chunks: ["index"],
       template: paths.appHtml,
+    }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      chunks: ["admin"],
+      template: paths.appHtml,
+      filename: 'admin.html'
     }),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
