@@ -56,7 +56,7 @@ module.exports = {
   admin: [
       require.resolve('./polyfills'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
-      paths.appIndexJs + "/admin.js",
+      paths.appSrc + "/admin.js",
   ]},
   output: {
     // Add /* filename */ comments to generated require()s in the output.
