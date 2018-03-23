@@ -12,6 +12,10 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
 
+const theme = {
+    "primary-color": "#1DA57A",
+}
+
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
@@ -152,7 +156,7 @@ module.exports = {
             options: {
                 plugins: [
                     [
-                        'import', { libraryName: 'antd', style: 'css' }
+                        'import', { libraryName: 'antd', style: true }
                     ]
                 ],
               // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -198,6 +202,20 @@ module.exports = {
                 },
               },
             ],
+          },
+          {
+            test: /\.less$/,
+            use: [{
+                loader: "style-loader" // creates style nodes from JS strings
+            }, {
+                loader: "css-loader" // translates CSS into CommonJS
+            }, {
+                loader: "less-loader", // compiles Less to CSS
+                options: {
+                    modifyVars: theme
+                }
+            }],
+            // loader: require.resolve(`less-loader`),
           },
           // "file" loader makes sure those assets get served by WebpackDevServer.
           // When you `import` an asset, you get its (virtual) filename.
