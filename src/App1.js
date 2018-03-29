@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'antd';
 import logo from './logo.svg';
 import './App.css';
 
@@ -13,6 +14,9 @@ class AppOne extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
+          <Button type="primary">
+              App1 确认
+          </Button>
       </div>
     );
   }
