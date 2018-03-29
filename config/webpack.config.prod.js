@@ -13,6 +13,8 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
 const Visuallizer = require('webpack-visualizer-plugin')
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const theme = {
     "primary-color": "#1DA57A",
@@ -267,41 +269,6 @@ module.exports = {
     // in `package.json`, in which case it will be the pathname of that URL.
     new InterpolateHtmlPlugin(env.raw),
     // Generates an `index.html` file with the <script> injected.
-    new HtmlWebpackPlugin({
-      inject: true,
-        chunks: ["index"],
-        template: paths.appHtml,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true,
-      },
-    }),
-    new HtmlWebpackPlugin({
-      inject: true,
-        chunks: ["admin"],
-      template: paths.appHtml,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true,
-      },
-        filename: 'admin.html'
-    }),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.
@@ -376,6 +343,56 @@ module.exports = {
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new Visuallizer({
           filename: './statistics.html'
+      }),
+      new webpack.DllReferencePlugin({
+          context: __dirname,
+          manifest: require(path.resolve('./config/build/vendor-manifest.json'))
+      }),
+      new CopyWebpackPlugin([{
+          context: __dirname,
+          from: './build/vendor.dll.js',
+          to: 'js/'
+      }]),
+      new HtmlWebpackPlugin({
+          inject: true,
+          chunks: ["lib", "index"],
+          template: paths.appHtml,
+          minify: {
+              removeComments: true,
+              collapseWhitespace: true,
+              removeRedundantAttributes: true,
+              useShortDoctype: true,
+              removeEmptyAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              keepClosingSlash: true,
+              minifyJS: true,
+              minifyCSS: true,
+              minifyURLs: true,
+          },
+      }),
+      new HtmlWebpackPlugin({
+          inject: true,
+          chunks: ["lib", "admin"],
+          template: paths.appHtml,
+          minify: {
+              removeComments: true,
+              collapseWhitespace: true,
+              removeRedundantAttributes: true,
+              useShortDoctype: true,
+              removeEmptyAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              keepClosingSlash: true,
+              minifyJS: true,
+              minifyCSS: true,
+              minifyURLs: true,
+          },
+          filename: 'admin.html'
+      }),
+      new HtmlWebpackIncludeAssetsPlugin({
+          assets: ['js/vendor.dll.js'],
+          files: ['index.html', 'admin.html'],
+          append: false,
+          hash: true
       })
   ],
   // Some libraries import Node modules but don't use them in the browser.
