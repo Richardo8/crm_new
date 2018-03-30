@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { Button } from 'antd'
 import logo from './logo.svg';
 import './App.css';
+import asyncComponent from './components/common/AsyncComponent'
+
+const AsyncIndexA = asyncComponent(() => import("./components/index/IndexA"))
+const AsyncIndexB = asyncComponent(() => import("./components/index/IndexB"))
+const AsyncIndexC = asyncComponent(() => import("./components/index/IndexC"))
 
 class App extends Component {
   render() {
@@ -17,6 +23,19 @@ class App extends Component {
           <Button type='primary'>
               确定
           </Button>
+          <Router>
+              <div>
+                  <ul>
+                      <li><Link to="/Index/indexA">IndexA</Link></li>
+                      <li><Link to="/Index/indexB">IndexB</Link></li>
+                      <li><Link to="/Index/indexC">IndexC</Link></li>
+                  </ul>
+                  <hr/>
+                  <Route exact path="/Index/indexA" component={AsyncIndexA}/>
+                  <Route path="/Index/indexB" component={AsyncIndexB}/>
+                  <Route path="/Index/indexC" component={AsyncIndexC}/>
+              </div>
+          </Router>
       </div>
     );
   }
