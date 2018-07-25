@@ -74,17 +74,43 @@ module.exports = function(proxy, allowedHost) {
     https: protocol === 'https',
     host: host,
     overlay: false,
-      // historyApiFallback: false,
-    historyApiFallback: {
-      // Paths with dots should still use the history fallback.
-      // See https://github.com/facebookincubator/create-react-app/issues/387.
-      disableDotRule: true,
-        rewrites: [
-            { from: /^\/admin.html/, to: '/build/admin.html' }
-        ]
-    },
+      historyApiFallback: false,
+    // historyApiFallback: {
+    //   // Paths with dots should still use the history fallback.
+    //   // See https://github.com/facebookincubator/create-react-app/issues/387.
+    //   disableDotRule: true,
+    //     rewrites: [
+    //         { from: /^\/admin\/$/, to: 'public/admin.html' },
+    //         { from: /^\/console/, to: 'public/console.html' },
+    //         // { from: /\/index\/$/, to: '/public/index.html' },
+    //         // { from: "/admin/adminA", to: '/build/admin.html'}
+    //         // { from: /^\/$/, to: '/build/admin.html' },
+    //         // { from: /^\/subpage/, to: '/build/index.html' },
+    //         // { from: /./, to: '/views/404.html' }
+    //     ]
+    // },
     public: allowedHost,
-    proxy,
+    proxy
+        : {
+      "/": {
+          bypass: function(req, res, proxyOptions) {
+            // console.log(res)
+            if (req.originalUrl.indexOf("/admin/") !== -1) {
+              console.log("include admin.");
+              res.redirect('/admin.html')
+            } else if (req.originalUrl.indexOf("/index/") !== -1) {
+              console.log("include index.");
+              res.redirect('/index.html')
+            } else if (req.originalUrl.indexOf("/console/") !== -1) {
+              console.log("include console.");
+              res.redirect('/console.html')
+            } else {
+              return '/index.html'
+            }
+          }
+      },
+    }
+    ,
     before(app) {
       // This lets us open files from the runtime error overlay.
       app.use(errorOverlayMiddleware());

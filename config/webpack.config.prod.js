@@ -65,7 +65,8 @@ module.exports = {
   // In production, we only want to load the polyfills and the app code.
   entry: {
     index: [require.resolve('./polyfills'), paths.appIndexJs],
-    admin: [require.resolve('./polyfills'), paths.appSrc + "/admin.js"]
+    admin: [require.resolve('./polyfills'), paths.appSrc + "/admin.js"],
+    console: [require.resolve('./polyfills'), paths.appSrc + "/console.js"]
   },
   output: {
     // The build folder.
@@ -388,9 +389,27 @@ module.exports = {
           },
           filename: 'admin.html'
       }),
+      new HtmlWebpackPlugin({
+          inject: true,
+          chunks: ["lib", "console"],
+          template: paths.appHtml,
+          minify: {
+              removeComments: true,
+              collapseWhitespace: true,
+              removeRedundantAttributes: true,
+              useShortDoctype: true,
+              removeEmptyAttributes: true,
+              removeStyleLinkTypeAttributes: true,
+              keepClosingSlash: true,
+              minifyJS: true,
+              minifyCSS: true,
+              minifyURLs: true,
+          },
+          filename: 'console.html'
+      }),
       new HtmlWebpackIncludeAssetsPlugin({
           assets: ['js/vendor.dll.js'],
-          files: ['index.html', 'admin.html'],
+          files: ['index.html', 'admin.html', 'console.html'],
           append: false,
           hash: true
       })

@@ -61,7 +61,13 @@ module.exports = {
       require.resolve('./polyfills'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
       paths.appSrc + "/admin.js",
-  ]},
+  ],
+  console: [
+      require.resolve('./polyfills'),
+      require.resolve('react-dev-utils/webpackHotDevClient'),
+      paths.appSrc + "/console.js",
+  ],
+  },
   output: {
     // Add /* filename */ comments to generated require()s in the output.
     pathinfo: true,
@@ -256,6 +262,12 @@ module.exports = {
       chunks: ["admin"],
       template: paths.appHtml,
       filename: 'admin.html'
+    }),
+    new HtmlWebpackPlugin({
+      inject: true,
+      chunks: ["console"],
+      template: paths.appHtml,
+      filename: 'console.html'
     }),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),

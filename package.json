@@ -32,6 +32,8 @@
     "jest": "20.0.4",
     "less": "^2.7.2",
     "less-loader": "^4.1.0",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.2.3",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
@@ -91,13 +93,15 @@
   },
   "babel": {
     "presets": [
-      "react-app"
+      "react-app",
+      "mobx"
     ]
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "devDependencies": {
-    "babel-plugin-import": "^1.6.7"
+    "babel-plugin-import": "^1.6.7",
+    "babel-preset-mobx": "^1.0.3"
   }
 }
