@@ -109,7 +109,7 @@ class WordAdder extends React.Component {
         words.push('marklar')
         // this.setState({...words})
         this.setState(preState => ({
-            words: [...preState.words, 'marklar']
+            words: [...preState.words, 'marklar' ]
         }))
     }
 
