@@ -89,6 +89,39 @@ class TodoView extends React.Component{
     }
 }
 
+class ListOfWords extends React.PureComponent{
+    render(){
+        return (
+            <div>
+                {this.props.words.join('，')}
+            </div>
+        )
+    }
+}
+
+class WordAdder extends React.Component {
+    state = {
+        words: ['marklar']
+    }
+
+    handleClick = () => {
+        const words = this.state.words
+        words.push('marklar')
+        // this.setState({...words})
+        this.setState(preState => ({
+            words: [...preState.words, 'marklar']
+        }))
+    }
+
+    render(){
+        return (
+            <div>
+                <Button onClick={this.handleClick}>click</Button>
+                <ListOfWords words={this.state.words}/>
+            </div>
+        )
+    }
+}
 
 class IndexA extends React.Component{
 
@@ -114,6 +147,7 @@ class IndexA extends React.Component{
                     IndexA
                     <Button onClick={this.setData}>setData</Button>
                     <TodoList store={todoStore} color="red"/>
+                    <WordAdder/>
                 </div>
             </Provider>
         )
